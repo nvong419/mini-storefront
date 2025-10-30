@@ -3,6 +3,8 @@
 
 //Fetch API data and display products
 import { useState, useEffect } from 'react';
+import ProductList from './ProductList';
+import CartSummary from './CartSummary';
 
 export default function Catalog() {
     const [products, setProducts] = useState([]);
@@ -21,11 +23,11 @@ export default function Catalog() {
     return (
         <div>
             <h2>Products</h2>
-            <ul>
-                {products.map((p) => (
-                    <li key={p.id}>{p.name} - ${p.price} - {p.stock > 0 ? 'In stock' : 'Out of stock'}</li>
-                ))}
-            </ul>
+            <ProductList products={products} />
+            <h3>Filter</h3>
+            <h3>Cart:</h3>
+            {/* <CartSummary /> */}
         </div>
+        
     )
 }

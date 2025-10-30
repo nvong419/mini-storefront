@@ -2,5 +2,9 @@
 'use client';
 
 // Show item count + total price; decrement and reset actions
+export default function CartSummary({}) {
 
-import { useCart } from 'react-use-shopping-cart';
+  return (
+    pass
+  );
+}
