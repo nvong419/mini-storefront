@@ -7,19 +7,29 @@ import ProductList from './ProductList';
 import CartSummary from './CartSummary';
 import CategoryFilter from './CategoryFilter';
 import PriceFilter from './PriceFilter';
+import StatusMessage from './StatusMessage';
 
 export default function Catalog() {
     const [products, setProducts] = useState([]);   // State for products
     const [cart, setCart] = useState([]);           // State for cart
     const [filters, setFilters] = useState({category: 'All', maxPrice: Infinity});     // State for filters
+    const [status, setStatus] = useState('loading');
+    const [error, setError] = useState(null);
 
     // Fetch products from API
     useEffect(() => {
         async function fetchProducts() {
-            const response = await fetch('/api/products');
-            if (!response.ok) throw new Error('Failed to fetch products');
-            const data = await response.json();
-            setProducts(data);
+            try {
+                setStatus('loading');
+                const response = await fetch('/api/products');
+                if (!response.ok) throw new Error('Network response was not ok');
+                const data = await response.json();
+                setProducts(data);
+                setStatus(data.length === 0 ? 'empty' : 'success');
+            } catch (err) {
+                setError(err.message);
+                setStatus('error');
+            }
         }
         
         fetchProducts();
@@ -110,6 +120,7 @@ export default function Catalog() {
         {/* MAIN CONTENT */}
         <main className="main-content">
         <h1>PRODUCTS</h1>
+        <StatusMessage status={status} error={error} />
         <ProductList products={filteredProducts} onAddToCart={handleAddToCart} />
         </main>
     </div>
